@@ -35,7 +35,7 @@ data = requests.get(
     headers=headers)
 
 show_list = []
-columns = ['Time', 'Task']
+columns = ['Total time', 'Time', 'Task']
 
 time_entries = data.json()
 for task in tasks:
@@ -59,7 +59,10 @@ for task in tasks:
         else:
             dates[d] = secs + mins * 60
 
+    total_t = sum(dates.values())
+    total_t = f'{total_t // 60}min{total_t % 60}sec'
     t = '\n'.join([f'{date}: {time // 60}min{time % 60}sec' for date, time in dates.items()])
-    show_list.append([t, task['name']])
+    show_list.append([total_t, t, ''.join(
+        [task['name'][i] if i % 130 != 0 else '\n' + task['name'][i] for i in range(len(task['name']))])])
 
 print(tabulate(show_list, headers=columns))
