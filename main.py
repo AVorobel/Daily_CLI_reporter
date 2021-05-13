@@ -4,10 +4,12 @@ import requests
 import os
 
 headers = {'X-Api-Key': os.environ.get('API_KEY')}
+project_name = 'Daily CLI reporter'
+
 data = requests.get(f'https://api.clockify.me/api/v1/workspaces/{os.environ.get("WORKSPACE_ID")}/projects',
                     headers=headers)
 
-project = list(filter(lambda x: x['name'] == 'Daily CLI reporter', data.json()))
+project = list(filter(lambda x: x['name'] == project_name, data.json()))
 if not project:
     sys.exit()
 
