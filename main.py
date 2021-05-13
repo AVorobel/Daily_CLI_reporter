@@ -26,7 +26,7 @@ proj_id = project[0]['id']
 data = requests.get(
     f'https://api.clockify.me/api/v1/workspaces/{os.environ.get("WORKSPACE_ID")}/projects/{proj_id}/tasks',
     headers=headers)
-# print(data.json())
+
 tasks = [{'id': i['id'], 'name': i['name'], 'time': i['duration'], 'user': i['assigneeIds']} for i in data.json()]
 
 user_id = tasks[0]['user'][0]
@@ -61,8 +61,5 @@ for task in tasks:
 
     t = '\n'.join([f'{date}: {time // 60}min{time % 60}sec' for date, time in dates.items()])
     show_list.append([t, task['name']])
-
-# for i in show_list:
-#     print(i)
 
 print(tabulate(show_list, headers=columns))
